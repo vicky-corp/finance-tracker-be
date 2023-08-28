@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/finance_tracker
+    username: root
+    password: mysql
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
