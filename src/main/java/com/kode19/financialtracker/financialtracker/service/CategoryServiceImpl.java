@@ -8,7 +8,6 @@ import com.kode19.financialtracker.financialtracker.exception.custom_exception.D
 import com.kode19.financialtracker.financialtracker.paging.PagingResponse;
 import com.kode19.financialtracker.financialtracker.repository.CategoryRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,17 +21,18 @@ public class CategoryServiceImpl implements CategoryService {
 
   private final CategoryRepository categoryRepository;
   private final CategoryMapper categoryMapper;
-  private final PagingResponse pagingResponse;
+  private final PagingResponse<List<CategoryDTO>> pagingResponse;
   private final MessageService messageService;
 
-  public PagingResponse getAllCategories(int page, int size, String sortBy, String direction) {
+  public PagingResponse<List<CategoryDTO>> getAllCategories(int page, int size, String sortBy,
+      String direction) {
     Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), sortBy);
     Page<Category> categories = categoryRepository.findAll(pageable);
 
     List<CategoryDTO> categoryDTOS = categories
         .stream()
         .map(categoryMapper::toDTO)
-        .collect(Collectors.toList());
+        .toList();
 
     if (categoryDTOS.isEmpty()) {
       throw new DataNotAvailableException(

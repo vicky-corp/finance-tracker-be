@@ -7,6 +7,7 @@ import com.kode19.financialtracker.financialtracker.dto.CategoryDTO;
 import com.kode19.financialtracker.financialtracker.paging.PagingResponse;
 import com.kode19.financialtracker.financialtracker.service.CategoryService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +28,7 @@ public class CategoryController {
   private final CategoryService categoryService;
 
   @GetMapping
-  public ResponseEntity<PagingResponse> getAllCategories(
+  public ResponseEntity<PagingResponse<List<CategoryDTO>>> getAllCategories(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
       @RequestParam(defaultValue = "idCategory") String sortBy,
@@ -58,6 +59,6 @@ public class CategoryController {
   @DeleteMapping("{id}")
   public ResponseEntity<Void> deleteCategory(@PathVariable("id") int idCategory) {
     categoryService.deleteCategory(idCategory);
-    return new ResponseEntity<>(null, OK);
+    return ResponseEntity.ok().build();
   }
 }

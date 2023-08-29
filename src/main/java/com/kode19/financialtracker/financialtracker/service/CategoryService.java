@@ -2,10 +2,12 @@ package com.kode19.financialtracker.financialtracker.service;
 
 import com.kode19.financialtracker.financialtracker.dto.CategoryDTO;
 import com.kode19.financialtracker.financialtracker.paging.PagingResponse;
+import java.util.List;
 
 public interface CategoryService {
 
-  PagingResponse getAllCategories(int page, int size, String sortBy, String direction);
+  PagingResponse<List<CategoryDTO>> getAllCategories(int page, int size, String sortBy,
+      String direction);
 
   CategoryDTO getCategoryById(int idCategory);
 
