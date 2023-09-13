@@ -24,20 +24,21 @@ public class CategoryServiceImpl implements CategoryService {
   private final PagingResponse<List<CategoryDTO>> pagingResponse;
   private final MessageService messageService;
 
+
   public PagingResponse<List<CategoryDTO>> getAllCategories(int page, int size, String sortBy,
       String direction) {
     Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), sortBy);
     Page<Category> categories = categoryRepository.findAll(pageable);
 
+    if (categories.isEmpty()) {
+      throw new DataNotAvailableException(
+          messageService.dataNotAvailable(Category.class.getSimpleName()));
+    }
+
     List<CategoryDTO> categoryDTOS = categories
         .stream()
         .map(categoryMapper::toDTO)
         .toList();
-
-    if (categoryDTOS.isEmpty()) {
-      throw new DataNotAvailableException(
-          messageService.dataNotAvailable(Category.class.getSimpleName()));
-    }
 
     pagingResponse.setData(categoryDTOS);
     pagingResponse.setCurrentPage(categories.getNumber());
